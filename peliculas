@@ -1,0 +1,104 @@
+# -*- coding: utf-8 -*-
+"""
+Nov 2013
+
+@author: swik
+@contact: twitter: swik_
+"""
+import urllib2, re
+from bs4 import BeautifulSoup
+from sys import exit
+import string as st
+
+
+def is_up():
+    try:
+        pagina = urllib2.urlopen('http://www.elitetorrent.net', data=None)
+        print 'Conectado a', pagina
+    except:
+        print 'Error al conectar'
+
+
+def movies_list(*args):
+    pagina = urllib2.urlopen('http://www.elitetorrent.net', data=None)
+    soup = BeautifulSoup(pagina)
+    i = 0
+    lst = []
+    while i < 1:
+        for peli in soup.find_all('b'):
+        
+            peli = str(peli)
+            peli = peli.replace('AVISO IMPORTANTE:','#####Peliculas mas vistas######')
+            peli = peli.replace('<b>','')
+            peli = peli.replace('</b>','')
+            print i, '%s %s' % ('-', peli)
+            lst.append(peli)
+            i+=1
+            
+        
+            
+    numero_pelicula = input('Numero pelicula: ' )
+    while type(numero_pelicula) != int:
+        print 'Introduzca un valor valido'
+        numero_pelicula = input('Numero pelicula' )
+    else:
+        pass
+
+    escogida = lst[numero_pelicula]
+    print 'Peli escogida: ' , escogida
+    escogida = st.lower(escogida)
+    #escogida = escogida.replace(' ','')
+    escogida = st.split(escogida)
+    
+    #Menu
+    print '''
+    1. Ver Sinopsis
+    2. Descargar Torrent
+    3. Salir del programa
+    4. Volver atras
+    
+    '''
+    opcion_menu = input('Opcion: ')
+    
+    if opcion_menu == 1:
+        print lector_sinopsis(escogida)
+    elif opcion_menu == 2:
+        print guetter(escogida)
+    elif opcion_menu == 3:
+        exit()
+    
+   
+def guetter(n):
+    html_page = urllib2.urlopen("http://www.elitetorrent.net")
+    soup = BeautifulSoup(html_page)
+    
+    for link in soup.find_all('a'):
+        current_link = link.get('href')
+        if n[0] in current_link:
+            resultado = 'http://www.elitetorrent.net' + current_link
+            return resultado
+             
+        
+#terminada
+def lector_sinopsis(a):
+    
+    html_page = urllib2.urlopen(guetter(a))
+    soup = BeautifulSoup(html_page)
+    for node in soup.findAll(attrs={'name': re.compile(r".*\bDescription\b.*")}):
+        return node
+    
+    
+def main():
+    movies_list()
+    
+    
+         
+if __name__ == '__main__':
+    if True:
+        main()
+        
+        
+    
+   
+    
+    
