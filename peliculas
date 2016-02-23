@@ -2,8 +2,8 @@
 """
 Nov 2013
 
-@author: swik
-@contact: twitter: swik_
+@author: Juan Carlos
+@contact: twitter: i1.jcarsm
 """
 import urllib2, re
 from bs4 import BeautifulSoup
